@@ -33,7 +33,7 @@ do
     ---@param parentId string
     function this.init(parentId)
         removeMacro(__MACRO_ID)
-        addMacroWithIcon(parentId, __MACRO_ID, __MACRO_DISPLAY_NAME, "f6f0", this.activate)
+        addMacroWithIcon(parentId, __MACRO_ID, __MACRO_DISPLAY_NAME, "eb94", this.activate)
     end
 
     function this.activate()
