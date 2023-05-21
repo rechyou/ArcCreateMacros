@@ -14,6 +14,24 @@ you then now then use <b>q()</b> to query notes, it returns an JayCurry instance
     Register Scenecontrol command, event will also be applied for offset by calling <b>:offset()</b> instance methods.
     If endTimingParamIndex is defined, when <b>:offset()</b> is called, the parameter value will also be modified.
 
+<size=18>JayCurry instance fields</size>
+<b>.events.all</b>
+    All events
+<b>.events.tap</b>
+    All Floor Tap events
+<b>.events.hold</b>
+    All Floor Hold events
+<b>.events.arc</b>
+    All Arc events
+<b>.events.arctap</b>
+    All ArcTap events
+<b>.events.timing</b>
+    All Timing events
+<b>.events.camera</b>
+    All Camera events
+<b>.events.scenecontrol</b>
+    All Scenecontrol events
+
 <size=18>JayCurry instance functions</size>
 <b>:children(query)</b>
     Create a subquery from resulting notes, only accepts one selector, flags are not allowed in this context.
