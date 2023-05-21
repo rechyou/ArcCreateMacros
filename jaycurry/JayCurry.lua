@@ -252,7 +252,6 @@ do
         if ends == nil then ends = 0 end
         -- Parse classes (.void.judgable)
         for class in query:sub(ends+1):gmatch("%.(%a+)") do
-            log(class)
             if class == "blue" then
                 customFilter:color("=", 0)
                 goto NextClass
@@ -284,7 +283,6 @@ do
             :: NextClass ::
         end
         for flag in query:sub(ends+1):gmatch("%:(%a+)") do
-            log(flag)
             if flag == "arctap" then
                 flags.arctap = true
                 goto NextFlag

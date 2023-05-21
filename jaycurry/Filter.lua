@@ -19,7 +19,6 @@ do
         if self.haveTypeConstraint then
             local typeofConditions = {}
             for type,enabled in pairs(self.types) do
-                log(type)
                 if enabled then
                     typeEscaped = string.format("%q", type)
                     typeofConditions[#typeofConditions+1] = "(e.is(" .. typeEscaped .. "))"
