@@ -28,7 +28,9 @@ do
     function this.initMacro(parentId)
 
         -- add macro
-        addMacroWithIcon(parentId, __MACRO_ID__, "JayCurry", "e55c", this.queryUI)
+        addMacroWithIcon(parentId, __MACRO_ID__, "Query", "e1b7", this.queryUI)
+        addMacroWithIcon(parentId, __MACRO_ID__ .. ".help", "Syntax Help", "e887", this.helpUI)
+        addMacroWithIcon(parentId, __MACRO_ID__ .. ".apihelp", "API Docs", "e873", this.apiHelpUI)
     end
 
     function this.queryUI()
@@ -50,8 +52,24 @@ do
     operations["Offset arcs"] = JayCurry.offset
     function this.operationUI()
         if Dialog == nil then notifyWarn("rech.dialogs.Dialog failed to load or is not installed!") return end
-        local dialog = Dialog(__MACRO_DIALOG_TITLE + " - Operation")
+        local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Operation")
 
+    end
+
+    function this.helpUI()
+        if Dialog == nil then notifyWarn("rech.dialogs.Dialog failed to load or is not installed!") return end
+        local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Syntax Help")
+        local help = Description(require("rech.jaycurry.help"))
+        dialog:add(help)
+        dialog:open()
+    end
+
+    function this.apiHelpUI()
+        if Dialog == nil then notifyWarn("rech.dialogs.Dialog failed to load or is not installed!") return end
+        local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - API Docs")
+        local apihelp = Description(require("rech.jaycurry.apihelp"))
+        dialog:add(apihelp)
+        dialog:open()
     end
 
     return this

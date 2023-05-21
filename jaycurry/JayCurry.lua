@@ -89,7 +89,7 @@ do
         self.events.scenecontrol = {}
     end
 
-    ---Creates new query
+    ---Static function for query, accepts multiple selectors, returns JayCurry instance.
     ---@param query string
     ---@return rech.jaycurry.JayQuery
     function this.query(selectors)
@@ -126,8 +126,7 @@ do
         return self
     end
 
-    --- Create a subquery from selector, only 1 selector is allowed.  
-    --- `:selected` selector is not allowed in this context.
+    ---Create a subquery Selects resulting note., only accepts one selector, flags are not allowed in this context.
     ---@return rech.jaycurry.JayQuery
     function this:children(selector)
         local subquery = this()
@@ -159,12 +158,12 @@ do
         return subquery
     end
 
-    ---Selects all notes from query
+    ---Selects resulting note.
     function this:select()
         Event.setSelection(self.events.all)
     end
 
-    ---Removes event from query
+    ---Returns batch command that removes resulting notes.
     function this:remove()
         local command = Command.create()
         for _,item in ipairs(self.events.all) do
@@ -173,7 +172,7 @@ do
         return command
     end
 
-    ---Offsets arc from query
+    ---Returns batch command that moves arc by deltaX and deltaY.
     ---@param dx number
     ---@param dy number
     function this:movearc(dx, dy)
@@ -188,7 +187,7 @@ do
         return command
     end
 
-    ---Offset event timing from query
+    ---Returns batch command that offsets event timing by ms.
     ---@param timing integer
     function this:offset(offset)
         local command = Command.create()

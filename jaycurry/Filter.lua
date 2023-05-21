@@ -41,23 +41,6 @@ do
             return f
     end
 
-    -- ---@param f function
-    -- function this:innerjoin(f1, f2)
-    --     return function (e)
-    --         return f1(e) and f2(e)
-    --     end
-    -- end
-
-    -- ---@param fn function[]
-    -- function this:allEquals(fn)
-    --     return function (e)
-    --         for _,f in ipairs(fn) do
-    --             if not f(e) then return false end
-    --             return true
-    --         end
-    --     end
-    -- end
-
     ---@return boolean
     local function generateCompare(op, v1, v2)
         if op == "=" then op = "==" end
