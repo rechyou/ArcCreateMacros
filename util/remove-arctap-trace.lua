@@ -10,10 +10,10 @@ do
     local request = require("rech.lib.request")
 
     ---@type rech.lib.CustomConstraints
-    local CustomConstraints = require("rech.util.custom-constraints")
+    local CustomConstraints = require("rech.lib.custom-constraints")
 
     ---@type rech.lib.Chores
-    local Chores = require("rech.chores")
+    local Chores = require("rech.lib.chores")
 
     ---Init macro
     ---@param parentId string
