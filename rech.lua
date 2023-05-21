@@ -1,0 +1,1 @@
+require("rech.init")
