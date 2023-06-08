@@ -46,16 +46,12 @@ do
         local desc = Description()
         local input = TextField():label("Input"):placeholder("1234"):tooltip("Input 4 digit numbers")
         while true do
-            desc.label(desc)
-
-            local inputfield = DialogField.create("input")
-            inputfield.setLabel("Input")
-            inputfield.setTooltip("Input 4 digit numbers")
-            inputfield.fieldConstraint.custom(this.checkInput, "Invalid 4 digit numbers")
-            local request = DialogInput.withTitle(__MACRO_DISPLAY_NAME).requestInput({inputfield, desc})
-            coroutine.yield()
+            desc:label(history)
+            local dialog = Dialog()
+            dialog:add(input,desc)
+            dialog:open()
             ---@type string
-            local input = request.result["input"]
+            local input = input:result()
             if input == "" then
                 notify("Quit game")
                 return
