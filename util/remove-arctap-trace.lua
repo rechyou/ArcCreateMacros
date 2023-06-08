@@ -17,7 +17,7 @@ do
 
     ---Init macro
     ---@param parentId string
-    function this.init(parentId)
+    function this.initMacro(parentId)
         removeMacro(__MACRO_ID)
         addMacroWithIcon(parentId, __MACRO_ID, __MACRO_DISPLAY_NAME, "e14e", this.activate)
     end

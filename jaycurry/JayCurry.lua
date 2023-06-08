@@ -6,7 +6,6 @@ do
 
     ---@class rech.jaycurry.JayCurry
     local this = Class()
-    this.__index = this
 
     ---@field private events table<string,LuaChartEvent[]>
     ---@field private events.all LuaChartEvent
@@ -68,34 +67,34 @@ do
     
     function this:init()
         ---@type string
-        self.query = nil
-        ---@type table<string,LuaChartEvent[]>
+        self.queryString = nil
+
         self.events = {}
-        ---@type LuaChartEvent
+        ---@type LuaChartEvent[]
         self.events.all = {}
-        ---@type LuaTap
+        ---@type LuaTap[]
         self.events.tap = {}
-        ---@type LuaHold
+        ---@type LuaHold[]
         self.events.hold = {}
-        ---@type LuaArc
+        ---@type LuaArc[]
         self.events.arc = {}
-        ---@type LuaArcTap
+        ---@type LuaArcTap[]
         self.events.arctap = {}
-        ---@type LuaTiming
+        ---@type LuaTiming[]
         self.events.timing = {}
-        ---@type LuaCamera
+        ---@type LuaCamera[]
         self.events.camera = {}
-        ---@type LuaScenecontrol
+        ---@type LuaScenecontrol[]
         self.events.scenecontrol = {}
     end
 
     ---Static function for query, accepts multiple selectors, returns JayCurry instance.
     ---@param query string
-    ---@return rech.jaycurry.JayQuery
+    ---@return self
     function this.query(selectors)
         local self = this()
-        self.query = selectors
-        for constraint in self.query:gmatch("[^%s]+") do
+        self.queryString = selectors
+        for constraint in self.queryString:gmatch("[^%s]+") do
             local result, flags = this._buildConstraint(constraint)
             ---@type EventSelectionRequest
             local req = nil
@@ -226,6 +225,7 @@ do
         return command
     end
 
+    ---@private
     ---@param query string
     function this._buildConstraint(query)
         ---@type rech.rquery.Filter
@@ -235,7 +235,7 @@ do
 
         if element ~= nil then
             element = element:lower()
-            if this.ElementTypes[element] then error("Element type " .. element .. " is not valid.") end
+            if not this.ElementTypes[element] then error("Element type " .. element .. " is not valid.") end
             customFilter:typeof(element)
         end
         -- Parse attributes 

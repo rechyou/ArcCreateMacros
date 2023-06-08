@@ -8,21 +8,25 @@ do
     addFolderWithIcon(__FOLDER_ID, __FOLDER_ID_UTIL, "e3c9","Misc")
     addFolderWithIcon(__FOLDER_ID, __FOLDER_ID_JQ, "e55c","JayCurry")
 
-    ---@type BullAndCows
+    ---@type rech.game.BullsAndCows
     local bullsandcows = require("rech.game.bullsandcows")
-    bullsandcows.init(__FOLDER_ID_GAME)
+    bullsandcows.initMacro(__FOLDER_ID_GAME)
 
-    ---@type Wordle
+    ---@type rech.game.Wordle
     local wordle = require("rech.game.wordle")
-    wordle.init(__FOLDER_ID_GAME)
+    wordle.initMacro(__FOLDER_ID_GAME)
 
-    ---@type DrawLine
+    ---@type rech.util.DrawLine
     local drawline = require("rech.util.drawline")
-    drawline.init(__FOLDER_ID_UTIL)
+    drawline.initMacro(__FOLDER_ID_UTIL)
 
-    ---@type RemoveArcTapTrace
+    ---@type rech.util.RemoveArcTapTrace
     local ratt = require("rech.util.remove-arctap-trace")
-    ratt.init(__FOLDER_ID_UTIL)
+    ratt.initMacro(__FOLDER_ID_UTIL)
+
+    ---@type rech.util.OptimizeChart
+    local optimize = require("rech.util.optimize-chart")
+    optimize.initMacro(__FOLDER_ID_UTIL)
 
     ---@type rech.jaycurry.JayCurry
     local jaycurry = require("rech.jaycurry.init")

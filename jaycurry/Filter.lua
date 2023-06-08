@@ -6,6 +6,29 @@ do
     ---Custom constraints and some built-in constraints
     local this = Class()
 
+    local positionMapping = {}
+    positionMapping.timing = "e.timing"
+    positionMapping.endtiming = "e.endTiming"
+    positionMapping.t = "e.timing"
+    positionMapping.t1 = "e.timing"
+    positionMapping.t2 = "e.endTiming"
+    positionMapping.x1 = "e.startX"
+    positionMapping.x2 = "e.endX"
+    positionMapping.y1 = "e.startX"
+    positionMapping.y2 = "e.endY"
+
+    local selfCompareMapping = {}
+    selfCompareMapping.timing = "e.timing"
+    selfCompareMapping.t = "e.timing"
+    selfCompareMapping.t1 = "e.timing"
+    selfCompareMapping.endtiming = "e.endTiming"
+    selfCompareMapping.t2 = "e.endTiming"
+    selfCompareMapping.x1 = "e.startX"
+    selfCompareMapping.x2 = "e.endX"
+    selfCompareMapping.y1 = "e.startY"
+    selfCompareMapping.y2 = "e.endY"
+
+
     function this:init()
         self.conditions = {}
         self.haveTimingGroupConstraint = false
@@ -53,8 +76,14 @@ do
         if not valid then
             error("Operator " .. op .. " is invalid for " .. v1 .. " and " .. v2)
         end
-        if type(v2) == "string" then v2 = string.format("%q", v2) end
-        v2 = tostring(v2)
+        if type(v2) == "string" then
+            if selfCompareMapping[v2] == nil then
+                v2 = string.format("%q", v2)
+                v2 = tostring(v2)
+            else
+                v2 = selfCompareMapping[v2]
+            end
+        end
         return "(" .. v1 .. "~= nil and " .. v1 .. op .. v2 .. ")"
     end
 
@@ -86,7 +115,9 @@ do
 
     ---@param value integer
     function this:timing(operator, value)
-        value = tonumber(value)
+        if not selfCompareMapping[value] then
+            value = tonumber(value)
+        end
         self.conditions[#self.conditions+1] = generateCompare(operator, "e.timing", value)
         return self
     end
@@ -103,7 +134,9 @@ do
 
     ---@param value integer
     function this:endtiming(operator, value)
-        value = tonumber(value)
+        if not selfCompareMapping[value] then
+            value = tonumber(value)
+        end
         self.conditions[#self.conditions+1] = generateCompare(operator, "e.endTiming", value)
         return self:typeof("long")
     end
@@ -132,28 +165,36 @@ do
 
     ---@param value integer
     function this:x1(operator, value)
-        value = tonumber(value)
+        if not selfCompareMapping[value] then
+            value = tonumber(value)
+        end
         self.conditions[#self.conditions+1] = generateCompare(operator, "e.startX", value)
         return self:typeof("arc")
     end
 
     ---@param value integer
     function this:x2(operator, value)
-        value = tonumber(value)
+        if not selfCompareMapping[value] then
+            value = tonumber(value)
+        end
         self.conditions[#self.conditions+1] = generateCompare(operator, "e.endX", value)
         return self:typeof("arc")
     end
 
     ---@param value integer
     function this:y1(operator, value)
-        value = tonumber(value)
+        if not selfCompareMapping[value] then
+            value = tonumber(value)
+        end
         self.conditions[#self.conditions+1] = generateCompare(operator, "e.startY", value)
         return self:typeof("arc")
     end
 
     ---@param value number
     function this:y2(operator, value)
-        value = tonumber(value)
+        if not selfCompareMapping[value] then
+            value = tonumber(value)
+        end
         self.conditions[#self.conditions+1] = generateCompare(operator, "e.endY", value)
         return self:typeof("arc")
     end
@@ -281,6 +322,7 @@ do
     this.mapping = {
         ["timing"] = this.timing,
         ["t"] = this.timing,
+        ["t1"] = this.timing,
         ["group"] = this.group,
         ["g"] = this.group,
         ["lane"] = this.lane,

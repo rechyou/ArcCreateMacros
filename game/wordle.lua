@@ -28,10 +28,10 @@ do
     local __WORDLIST = require("rech.game.wordle-wordlist")
     local __WORDLIST_SEARCH = table.concat(__WORDLIST, "|")
 
-    ---@class Wordle
+    ---@class rech.game.Wordle
     ---Init macro
     ---@param parentId string
-    function this.init(parentId)
+    function this.initMacro(parentId)
         removeMacro(__MACRO_ID)
         addMacroWithIcon(parentId, __MACRO_ID, __MACRO_DISPLAY_NAME, "eb94", this.activate)
     end
