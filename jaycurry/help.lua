@@ -40,6 +40,8 @@ Attributes that automatically assumed as <color=green>true</color> when there's 
 Attributes are splitted into different categories: <b>All events, long notes, floor notes, Arc, ArcTap</b>
 <color=red>Note: when attributes for designated types are used, type constraints are automatically applied.</color>
 
+Some attributes allow self-comparing: timing, endTiming, x1, x2, y1, y2.
+For example, arc[x1==x2] selects arc that has same starting X position and ending X position.
 
 <size=16>All events and notes</size>
 <b>timing t t1</b>
