@@ -287,7 +287,15 @@ do
                 flags.arctap = true
                 goto NextFlag
             end
+            if flag == "at" then
+                flags.arctap = true
+                goto NextFlag
+            end
             if flag == "selected" then
+                flags.selected = true
+                goto NextFlag
+            end
+            if flag == "sel" then
                 flags.selected = true
                 goto NextFlag
             end

@@ -84,6 +84,9 @@ do
                 v2 = selfCompareMapping[v2]
             end
         end
+        if type(v2) == "boolean" then
+            v2 = tostring(v2)
+        end
         return "(" .. v1 .. "~= nil and " .. v1 .. op .. v2 .. ")"
     end
 
