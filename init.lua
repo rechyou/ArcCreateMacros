@@ -28,6 +28,14 @@ do
     local optimize = require("rech.util.optimize-chart")
     optimize.initMacro(__FOLDER_ID_UTIL)
 
+    ---@type rech.util.CutArcOnTiming
+    local cutarc = require("rech.util.cut-arc-on-timing")
+    cutarc.initMacro(__FOLDER_ID_UTIL)
+
+    ---@type rech.util.SquareWave
+    local squareWave = require("rech.util.squarewave")
+    squareWave.initMacro(__FOLDER_ID_UTIL)
+
     ---@type rech.jaycurry.JayCurry
     local jaycurry = require("rech.jaycurry.init")
     jaycurry.initMacro(__FOLDER_ID_JQ)
