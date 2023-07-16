@@ -2,13 +2,13 @@ do
     ---@type rech.Object
     local Class = require("rech.Class")
     
-    ---@class rech.util.OptimizeChart
+    ---@class rech.editing.OptimizeChart
     local this = Class()
 
     ---@type rech.jaycurry.JayCurry
     local jq = require("rech.jaycurry.JayCurry")
 
-    local __MACRO_ID = "rech.util.OptimizeChart"
+    local __MACRO_ID = "rech.editing.OptimizeChart"
     local __MACRO_DISPLAY_NAME = "Optimize chart"
 
     ---Init macro

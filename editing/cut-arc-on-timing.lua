@@ -4,10 +4,10 @@ do
     ---@type rech.lib.Request
     local request = require("rech.lib.request")
     
-    ---@class rech.util.CutArcOnTiming
+    ---@class rech.editing.CutArcOnTiming
     local this = Class()
 
-    local __MACRO_ID = "rech.util.CutArcOnTiming"
+    local __MACRO_ID = "rech.editing.CutArcOnTiming"
     local __MACRO_DISPLAY_NAME = "Cut arc on timing"
 
     ---Init macro

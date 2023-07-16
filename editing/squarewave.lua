@@ -4,17 +4,17 @@ do
     ---@type rech.lib.Request
     local request = require("rech.lib.request")
     
-    ---@class rech.util.SquareWave
+    ---@class rech.editing.SquareWave
     local this = Class()
 
-    local __MACRO_ID = "rech.util.SquareWave"
+    local __MACRO_ID = "rech.editing.SquareWave"
     local __MACRO_DISPLAY_NAME = "Square wave"
 
     ---Init macro
     ---@param parentId string
     function this.initMacro(parentId)
         removeMacro(__MACRO_ID)
-        addMacroWithIcon(parentId, __MACRO_ID, __MACRO_DISPLAY_NAME, "e14e", this.activate)
+        addMacroWithIcon(parentId, __MACRO_ID, __MACRO_DISPLAY_NAME, "eba7", this.activate)
     end
 
     function this.activate()

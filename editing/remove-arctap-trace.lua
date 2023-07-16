@@ -1,9 +1,9 @@
 do
-    ---@module rech.util.RemoveArcTapTrace
+    ---@module rech.editing.RemoveArcTapTrace
     local this = {}
     this.__index = this
 
-    local __MACRO_ID = "rech.util.removearctaptrace"
+    local __MACRO_ID = "rech.editing.removearctaptrace"
     local __MACRO_DISPLAY_NAME = "Remove ArcTap trace"
 
     ---@type rech.lib.Request
@@ -19,7 +19,7 @@ do
     ---@param parentId string
     function this.initMacro(parentId)
         removeMacro(__MACRO_ID)
-        addMacroWithIcon(parentId, __MACRO_ID, __MACRO_DISPLAY_NAME, "e14e", this.activate)
+        addMacroWithIcon(parentId, __MACRO_ID, __MACRO_DISPLAY_NAME, "e3bc", this.activate)
     end
 
     function this.activate()

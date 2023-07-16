@@ -3,11 +3,11 @@ do
     local Dialog = require("rech.dialogs.Dialog")
     ---@type rech.dialogs.Dropdown
     local Dropdown = require("rech.dialogs.fields.Dropdown")
-    ---@module rech.util.DrawLine
+    ---@module rech.editing.DrawLine
     local this = {}
     this.__index = this
 
-    local __MACRO_ID = "rech.util.drawline"
+    local __MACRO_ID = "rech.editing.drawline"
     local __MACRO_DISPLAY_NAME = "Draw arc by clicking"
     local __MACRO_DIALOG_TITLE = "Draw arc configuration"
 
