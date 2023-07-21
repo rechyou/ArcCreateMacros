@@ -123,7 +123,7 @@ do
             dialog:add(dropdown)
             dialog:open()
             local c = r:move(dropdown:result_num()-1)
-            c.name = "Move to group"
+            c.name = "Move to group " .. (dropdown:result_num()-1)
             c.commit()
         end
     }
