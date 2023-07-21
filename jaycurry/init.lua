@@ -51,7 +51,82 @@ do
         this.operationUI(ret)
     end
 
-    local operations = {}
+    ---@type table<string, fun(rech.jaycurry.JayCurry)>
+    local operations = {
+         ---@param r rech.jaycurry.JayCurry
+        ["Nothing"] = function (r)
+            notify("You decided to do nothing.")
+        end,
+         ---@param r rech.jaycurry.JayCurry
+        ["Remove selection"] = function (r)
+            local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Remove notes")
+            local dropdown = Dropdown():set("Yes", "No"):value(1):label("Remove notes?")
+            dialog:add(dropdown)
+            dialog:open()
+            if dropdown:result() == "Yes" then
+                local c = r:remove()
+                c.name = "Remove notes"
+                c.commit()
+            end
+        end,
+        ---@param r rech.jaycurry.JayCurry
+        ["Move arcs"] = function (r)
+            if #r.events.arc == 0 then
+                warn("There's no arc to move!")
+                return
+            end
+            local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Move arcs")
+            local dx = TextField():is_number("Please input a number"):label("dx"):value("0")
+            local dy = TextField():is_number("Please input a number"):label("dy"):value("0")
+            dialog:add(dx, dy)
+            dialog:open()
+            local c = r:movearc(tonumber(dx:result()), tonumber(dy:result()))
+            c.name = "Move arcs"
+            c.commit()
+        end,
+        ---@param r rech.jaycurry.JayCurry
+        ["Copy to group"] = function (r)
+            local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - to timing group")
+            local dropdown = Dropdown()
+            for _, tg in ipairs(JayCurry.GetTimingGroups()) do
+                local name = "#" .. tg.num
+                if tg.name ~= nil and tg.name ~= "" then
+                    name = name .. ":" .. tg.name
+                end
+                if tg.num == 0 then
+                    name = "Base group"
+                end
+                dropdown:append(name)
+            end
+            dropdown:label("Target group")
+            dialog:add(dropdown)
+            dialog:open()
+            local c = r:copy(dropdown:result_num()-1)
+            c.name = "Copy to group " .. (dropdown:result_num()-1)
+            c.commit()
+        end,
+        ---@param r rech.jaycurry.JayCurry
+        ["Move to group"] = function (r)
+            local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - to timing group")
+            local dropdown = Dropdown()
+            for _, tg in ipairs(JayCurry.GetTimingGroups()) do
+                local name = "#" .. tg.num
+                if tg.name ~= nil and tg.name ~= "" then
+                    name = name .. ":" .. tg.name
+                end
+                if tg.num == 0 then
+                    name = "Base group"
+                end
+                dropdown:append(name)
+            end
+            dropdown:label("Target group")
+            dialog:add(dropdown)
+            dialog:open()
+            local c = r:move(dropdown:result_num()-1)
+            c.name = "Move to group"
+            c.commit()
+        end
+    }
     ---@param r rech.jaycurry.JayCurry
     function this.operationUI(r)
         if Dialog == nil then notifyWarn("rech.dialogs.Dialog failed to load or is not installed!") return end
@@ -72,62 +147,9 @@ do
         local dropdown = Dropdown():set(keys):value(keys[1]):label("Select Operation")
         dialog:add(dropdown)
         dialog:open()
+        local v = operations[dropdown:result()]
         operations[dropdown:result()](r)
     end
-
-    ---@param r rech.jaycurry.JayCurry
-    function this.UIRemove(r)
-        local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Remove notes")
-        local dropdown = Dropdown():set("Yes", "No"):value(1):label("Remove notes?")
-        dialog:add(dropdown)
-        dialog:open()
-        if dropdown:result() == "Yes" then
-            local c = r:remove()
-            c.name = "Remove notes"
-            c.commit()
-        end
-    end
-    operations["Remove selection"] = this.UIRemove
-
-    ---@param r rech.jaycurry.JayCurry
-    function this.UIMoveArc(r)
-        if #r.events.arc == 0 then
-            warn("There's no arc to move!")
-            return
-        end
-        local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Move arcs")
-        local dx = TextField():is_number("Please input a number"):label("dx"):value("0")
-        local dy = TextField():is_number("Please input a number"):label("dy"):value("0")
-        dialog:add(dx, dy)
-        dialog:open()
-        local c = r:movearc(tonumber(dx:result()), tonumber(dy:result()))
-        c.name = "Move arcs"
-        c.commit()
-    end
-    operations["Move arcs"] = this.UIMoveArc
-
-    ---@param r rech.jaycurry.JayCurry
-    function this.UICopyToGroup(r)
-        local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - to timing group")
-        local dropdown = Dropdown()
-        for _, tg in ipairs(JayCurry.GetTimingGroups()) do
-            local name = "#" .. tg.num
-            if tg.name ~= nil and tg.name ~= "" then
-                name = name .. ":" .. tg.name
-            end
-            if tg.num == 0 then
-                name = "Base group"
-            end
-            dropdown:append(name)
-        end
-        dropdown:label("Target group")
-        dialog:add(dropdown)
-        dialog:open()
-        local c = r:copy(dropdown:result_num()-1)
-        c.name = "Copy to group"
-        c.commit()
-    end
-    operations["Copy to timing group"] = this.UICopyToGroup
 
     function this.helpUI()
         if Dialog == nil then notifyWarn("rech.dialogs.Dialog failed to load or is not installed!") return end

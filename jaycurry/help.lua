@@ -46,10 +46,10 @@ For example, arc[x1==x2] selects arc that has same starting X position and endin
 <size=16>All events and notes</size>
 <b>timing t t1</b>
     Event start timing
-<b>group g</b>
+<b>group tg g</b>
     Timing group ID of the event
 <b>fadingholds noinput noshadow noarccap nohead noheightindicator noclip side</b>
-    Timing group where event resides matche attribute value
+    Timing group where event resides match attribute value
 <b>anglex angley</b>
     Timing group note approaching angle
 

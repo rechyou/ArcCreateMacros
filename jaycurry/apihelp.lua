@@ -7,12 +7,19 @@ local q = JayCurry.query</b>
 
 you then now then use <b>q()</b> to query notes, it returns an JayCurry instance.
 
-<size=18>JayCurry class functions</size>
+<size=18>JayCurry class static functions</size>
 <b>JayCurry.query(query)</b>
     Static function for query, accepts multiple selectors, returns JayCurry instance.
 <b>JayCurry.registerScenecontrol(scName, endTimingParamIndex)</b>
     Register Scenecontrol command, event will also be applied for offset by calling <b>:offset()</b> instance methods.
     If endTimingParamIndex is defined, when <b>:offset()</b> is called, the parameter value will also be modified.
+<b>JayCurry.GetTimingGroups(index)</b>
+    Return a table of LuaTimingGroup, you can specify whether the table starts with 1 or 0.
+    When you want the result to be 0 based, put 0 into the parameter field.
+    Please note that in Lua, ipair() only works with 1-index based table.
+<b>JayCurry.GetTimingGroupNameIndex()</b>
+    Return a table of string mapped to timing group ID, for consistency, value starts by 0.
+    But base group is not able to be named, so it usually starts by 1
 
 <size=18>JayCurry instance fields</size>
 <b>.events.all</b>
@@ -43,4 +50,8 @@ you then now then use <b>q()</b> to query notes, it returns an JayCurry instance
     Returns batch command that offsets event timing by ms.
 <b>:movearc(deltaX, deltaY)</b>
     Returns batch command that moves arc by deltaX and deltaY.
+<b>:copy(tgId)</b>
+    Returns batch command that copy events to specified timing group.
+<b>:move(tgId)</b>
+    Returns batch command that move events to specified timing group.
 ]]

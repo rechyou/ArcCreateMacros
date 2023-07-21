@@ -302,18 +302,48 @@ do
             return nil
         end
         local command = Command.create()
-        for _,item in ipairs(self.events.all) do
+        for _,item in ipairs(self.events.timing) do
+            if item.timing == 0 then
+                item = item.copy()
+            end
+            item.timingGroup = tg
+            command.add(item.save())
+        end
+        for _,item in ipairs(self.events.tap) do
+            item.timingGroup = tg
+            command.add(item.save())
+        end
+        for _,item in ipairs(self.events.arctap) do
+            item.timingGroup = tg
+            command.add(item.save())
+        end
+        for _,item in ipairs(self.events.hold) do
+            item.timingGroup = tg
+            command.add(item.save())
+        end
+        for _,item in ipairs(self.events.arc) do
+            item.timingGroup = tg
+            command.add(item.save())
+        end
+        for _,item in ipairs(self.events.camera) do
+            item.timingGroup = tg
+            command.add(item.save())
+        end
+        for _,item in ipairs(self.events.scenecontrol) do
             item.timingGroup = tg
             command.add(item.save())
         end
         return command
     end
 
+    ---@param index number
     ---@return LuaTimingGroup[]
-    function this.GetTimingGroups()
+    function this.GetTimingGroups(index)
+        index = tonumber(index)
+        if index == nil then index = 1 end
         local t = {}
         for i = 0, Context.timingGroupCount -1 do
-            t[#t+1] = Event.getTimingGroup(i)
+            t[#t+index] = Event.getTimingGroup(i)
         end
         return t
     end
