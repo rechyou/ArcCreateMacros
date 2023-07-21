@@ -48,11 +48,23 @@ do
             local typeofConditions = {}
             for type,enabled in pairs(self.types) do
                 if enabled then
-                    typeEscaped = string.format("%q", type)
+                    local typeEscaped = string.format("%q", type)
                     typeofConditions[#typeofConditions+1] = "(e.is(" .. typeEscaped .. "))"
                 end
             end
             typeCondition = "(" .. table.concat(typeofConditions, "or") .. ")"
+        end
+        -- monkey patch sky floor condition
+        local skyfloorCondition = {}
+        for _,type in ipairs({"sky", "floor"}) do
+            if self.types[type] == true then
+                local typeEscaped = string.format("%q", type)
+                skyfloorCondition[#skyfloorCondition+1] = "(e.is(" .. typeEscaped .. "))"
+            end
+        end
+        if #skyfloorCondition > 0 then
+            local skyfloorConditionString = "(" .. table.concat(skyfloorCondition, "and") .. ")"
+            typeCondition = string.format("(%s and %s)", typeCondition, skyfloorConditionString)
         end
         local condition = table.concat(self.conditions, "and")
         if condition == "" then condition = " true" end

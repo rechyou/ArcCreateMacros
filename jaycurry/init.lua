@@ -39,7 +39,8 @@ do
     function this.queryUI()
         if Dialog == nil then notifyWarn("rech.dialogs.Dialog failed to load or is not installed!") return end
         local dialog = Dialog(__MACRO_DIALOG_TITLE)
-        local query = TextField():label("Query"):tooltip("Enter query expression, eg. hold[d=0] to find 0ms hold"):placeholder("Enter query expression, eg. hold[d=0] to find 0ms hold")
+        local tip = "Enter query expression, eg. hold[d=0].floor to find 0ms floor hold"
+        local query = TextField():label("Query"):tooltip(tip):placeholder(tip)
         query:value(lastQuery)
         local cheatsheet = [[Cheat sheet
 <b>arc[tg=0]</b> Select arc in base group
@@ -47,7 +48,6 @@ do
 <b>arc.blue.void:arctap</b> Select arctap from void arc that has blue color attribute
         ]]
         dialog:add(
-            
             Description(cheatsheet),
             query
         )
@@ -75,6 +75,16 @@ do
                 c.name = "Remove notes"
                 c.commit()
             end
+        end,
+        ---@param r rech.jaycurry.JayCurry
+        ["Offset event timing"] = function (r)
+            local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Offset event timing")
+            local deltaTime = TextField():is_number("Please input a number"):label("Delta Time (ms)"):value("0")
+            dialog:add(deltaTime)
+            dialog:open()
+            local c = r:offset(tonumber(deltaTime:result()))
+            c.name = "Offset event timing"
+            c.commit()
         end,
         ---@param r rech.jaycurry.JayCurry
         ["Move arcs"] = function (r)
@@ -136,6 +146,10 @@ do
     }
     ---@param r rech.jaycurry.JayCurry
     function this.operationUI(r)
+        if #r.events.all == 0 then
+            notify("There's no any event from selection, check query again.")
+            return
+        end
         if Dialog == nil then notifyWarn("rech.dialogs.Dialog failed to load or is not installed!") return end
         local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Operation")
         local summary = "Object summary:"
@@ -154,7 +168,6 @@ do
         local dropdown = Dropdown():set(keys):value(keys[1]):label("Select Operation")
         dialog:add(dropdown)
         dialog:open()
-        local v = operations[dropdown:result()]
         operations[dropdown:result()](r)
     end
 
