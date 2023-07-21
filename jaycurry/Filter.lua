@@ -34,6 +34,11 @@ do
         self.haveTimingGroupConstraint = false
         self.types = {}
         self.haveTypeConstraint = false
+        self.timingGroupMapping = nil
+    end
+
+    function this:setTimingGroupMapping(t)
+        self.timingGroupMapping = t
     end
 
     ---Builds a dynamic function for custom constraints, faster than chaining a lot of custom constraints.
@@ -111,8 +116,13 @@ do
 
     ---@param value integer
     function this:group(operator, value)
-        value = tonumber(value)
-        self.conditions[#self.conditions+1] = generateCompare(operator, "e.timingGroup", value)
+        local index = tonumber(value)
+        if index == nil then
+            if self.timingGroupMapping[value] ~= nil then
+                index = self.timingGroupMapping[value]
+            end
+        end
+        self.conditions[#self.conditions+1] = generateCompare(operator, "e.timingGroup", index)
         return self
     end
 
@@ -327,6 +337,7 @@ do
         ["t"] = this.timing,
         ["t1"] = this.timing,
         ["group"] = this.group,
+        ["tg"] = this.group,
         ["g"] = this.group,
         ["lane"] = this.lane,
         ["endtiming"] = this.endtiming,

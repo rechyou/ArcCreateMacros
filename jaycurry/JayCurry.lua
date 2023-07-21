@@ -1,5 +1,5 @@
 do
-    ---@type rech.Object
+    ---@type rech.Class
     local Class = require("rech.Class")
     ---@type rech.jaycurry.Filter
     local Filter = require("rech.jaycurry.Filter")
@@ -177,19 +177,25 @@ do
     function this:movearc(dx, dy)
         local command = Command.create()
         for _,item in ipairs(self.events.arc) do
-            item.startX = item.startX + dx
-            item.startY = item.startY + dy
-            item.endX = item.endX + dx
-            item.endY = item.endY + dy
+            item.startXY = xy(item.startX + dx, item.startY + dy)
+            item.endXY = xy(item.endX + dx, item.endY + dy)
             command.add(item.save())
         end
         return command
     end
 
     ---Returns batch command that offsets event timing by ms.
+    ---@return LuaChartCommand
     ---@param timing integer
     function this:offset(offset)
         local command = Command.create()
+        for _,item in ipairs(self.events.timing) do
+            if item.timing == 0 then
+                command.add(item.copy().save())
+            end
+            item.timing = item.timing + offset
+            command.add(item.save())
+        end
         for _,item in ipairs(self.events.tap) do
             item.timing = item.timing + offset
             command.add(item.save())
@@ -225,13 +231,113 @@ do
         return command
     end
 
+    ---Copy objects to destination timing group
+    ---@return LuaChartCommand
+    ---@param tg number
+    function this:copy(tg, skipConflicts)
+        if tg >= Context.timingGroupCount then
+            return nil
+        end
+        local command = Command.create()
+        local newTimings = self.events.timing
+        if not skipConflicts then
+            -- replace clashed timings first
+            log(string.format("timing[g=%d]", tg))
+            local timings = this.query(string.format("timing[g=%d]", tg)).events.timing
+            for sourceIndex,source in ipairs(newTimings) do
+                for targetIndex,target in ipairs(timings) do
+                    if target.timing == source.timing then
+                        target.bpm = source.bpm
+                        command.add(target.save())
+                        table.remove(newTimings, sourceIndex)
+                        goto copyTimingContinue
+                    end
+                end
+                :: copyTimingContinue ::
+            end
+        end
+        for _,item in ipairs(newTimings) do
+            local n = item.copy()
+            n.timingGroup = tg
+            command.add(n.save())
+        end
+        for _,item in ipairs(self.events.tap) do
+            local n = item.copy()
+            n.timingGroup = tg
+            command.add(n.save())
+        end
+        for _,item in ipairs(self.events.arctap) do
+            local n = item.copy()
+            n.timingGroup = tg
+            command.add(n.save())
+        end
+        for _,item in ipairs(self.events.hold) do
+            local n = item.copy()
+            n.timingGroup = tg
+            command.add(n.save())
+        end
+        for _,item in ipairs(self.events.arc) do
+            local n = item.copy()
+            n.timingGroup = tg
+            command.add(n.save())
+        end
+        for _,item in ipairs(self.events.camera) do
+            local n = item.copy()
+            n.timingGroup = tg
+            command.add(n.save())
+        end
+        for _,item in ipairs(self.events.scenecontrol) do
+            local n = item.copy()
+            n.timingGroup = tg
+            command.add(n.save())
+        end
+        return command
+    end
+
+    ---Move objects to destination timing group
+    ---@return LuaChartCommand
+    ---@param tg number
+    function this:move(tg)
+        if Event.getTimingGroup(tg) == nil then
+            return nil
+        end
+        local command = Command.create()
+        for _,item in ipairs(self.events.all) do
+            item.timingGroup = tg
+            command.add(item.save())
+        end
+        return command
+    end
+
+    ---@return LuaTimingGroup[]
+    function this.GetTimingGroups()
+        local t = {}
+        for i = 0, Context.timingGroupCount -1 do
+            t[#t+1] = Event.getTimingGroup(i)
+        end
+        return t
+    end
+
+    ---@return LuaTimingGroup[]
+    function this.GetTimingGroupNameIndex()
+        local t = {}
+        for i = 0, Context.timingGroupCount - 1 do
+            local name = Event.getTimingGroup(i).name
+            if name then
+                t[Event.getTimingGroup(i).name] = i
+            end
+        end
+        return t
+    end
+
     ---@private
     ---@param query string
     function this._buildConstraint(query)
-        ---@type rech.rquery.Filter
+        ---@type rech.jaycurry.Filter
         local customFilter = Filter()
         local element = query:match("^[^%[%]%.%:]+")
         local flags = {}
+        customFilter:setTimingGroupMapping(this.GetTimingGroupNameIndex())
 
         if element ~= nil then
             element = element:lower()

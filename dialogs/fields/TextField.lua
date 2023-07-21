@@ -17,14 +17,17 @@ do
     ---@param value string
     ---@return FieldConstraint
     function this:pattern(value, message)
-        if value == nil then return self.field.label end
         self.field.fieldConstraint.custom(function(input)
             return input:match(value) ~= nil
         end, message)
         return self
     end
 
-    function this:constraint()
+    function this:is_number(message)
+        self.field.fieldConstraint.custom(function(input)
+            return tonumber(input) ~= nil
+        end, message)
+        return self
     end
 
     return this
