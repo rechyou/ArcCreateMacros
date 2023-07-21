@@ -120,6 +120,9 @@ do
     ---@param type ('"any"' | '"tap"' | '"hold"' | '"arc"' | '"solidarc"' | '"voidarc"' | '"trace"' | '"arctap"' | '"timing"' | '"camera"' | '"floor"' | '"sky"' | '"short"' | '"long"' | '"judgeable"')
     function this:typeof(type)
         self.types[type] = true
+        if type == "tap" or type == "hold" then
+            self.types["floor"] = true
+        end
         self.haveTypeConstraint = true
         return self
     end
