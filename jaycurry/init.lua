@@ -68,7 +68,6 @@ do
         local keys={}
         for key,_ in pairs(operations) do
             keys[#keys+1] = key
-            notify(key)
         end
         local dropdown = Dropdown():set(keys):value(keys[1]):label("Select Operation")
         dialog:add(dropdown)
