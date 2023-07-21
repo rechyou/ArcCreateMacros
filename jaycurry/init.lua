@@ -39,7 +39,7 @@ do
     function this.queryUI()
         if Dialog == nil then notifyWarn("rech.dialogs.Dialog failed to load or is not installed!") return end
         local dialog = Dialog(__MACRO_DIALOG_TITLE)
-        local tip = "Enter query expression, eg. hold[d=0].floor to find 0ms floor hold"
+        local tip = "Enter query expression, eg. hold[d<=10] to find floor hold less than 10ms"
         local query = TextField():label("Query"):tooltip(tip):placeholder(tip)
         query:value(lastQuery)
         local cheatsheet = [[Cheat sheet
