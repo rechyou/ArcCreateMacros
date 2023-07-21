@@ -39,10 +39,17 @@ do
     function this.queryUI()
         if Dialog == nil then notifyWarn("rech.dialogs.Dialog failed to load or is not installed!") return end
         local dialog = Dialog(__MACRO_DIALOG_TITLE)
-        local query = TextField():label("Query")
+        local query = TextField():label("Query"):tooltip("Enter query expression, eg. hold[d=0] to find 0ms hold"):placeholder("Enter query expression, eg. hold[d=0] to find 0ms hold")
         query:value(lastQuery)
-        dialog:add(query,
-            Description("Enter query expression")
+        local cheatsheet = [[Cheat sheet
+<b>arc[tg=0]</b> Select arc in base group
+<b>tap:sel</b> Select tap from currently selected notes
+<b>arc.blue.void:arctap</b> Select arctap from void arc that has blue color attribute
+        ]]
+        dialog:add(
+            
+            Description(cheatsheet),
+            query
         )
         dialog:open()
         lastQuery = query:result()

@@ -5,7 +5,7 @@ or
 <b>local JayCurry = require("rech.jaycurry.JayCurry")
 local q = JayCurry.query</b>
 
-you then now then use <b>q()</b> to query notes, it returns an JayCurry instance.
+you then now can use <b>q()</b> to query notes, it returns a JayCurry instance.
 
 <size=18>JayCurry class static functions</size>
 <b>JayCurry.query(query)</b>

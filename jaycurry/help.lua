@@ -1,11 +1,9 @@
 return [[<b><size=20>Query syntax</size></b>
-
 JayCurry selector implements a syntax that defines the pattern to select elements.
-JC selector can be grouped into 4 categories.
-Element Types, Attributes, Classes, Flags
+JC selector can be grouped into 4 categories: Element Types, Attributes, Classes, Flags
 
 <size=18>Examples</size>
-arc[y1>=1].void:arctap
+<b>arc[y1>=1].void:arctap</b>
 This queries arctap where the arc is void and y1 is larger than 1.
 
 <b>arctap[x>=0,x<=1]</b>
@@ -15,20 +13,13 @@ Selects ArcTap where their x is at 0~1.
 Selects floor tap where their timing group resides does not have noinput.
 
 <size=18>Element Types</size>
-<b>tap</b>
-    Floor tap
-<b>hold</b>
-    Floor holds
-<b>arc</b>
-    Arcs
-<b>arctap</b>
-    ArcTap
-<b>timing</b>
-    Timing
-<b>camera</b>
-    Camera
-<b>scenecontrol</b>
-    Scenecontrol
+<b>tap</b> - Floor tap
+<b>hold</b> -Floor holds
+<b>arc</b> - Arcs
+<b>arctap</b> - ArcTap
+<b>timing</b> - Timing
+<b>camera</b> - Camera
+<b>scenecontrol</b> - Scenecontrol
 
 <size=18>Attributes</size>
 Several attributes supports more than equal comparators (=), for example, >, >=, <, <=
@@ -38,7 +29,7 @@ Attributes that automatically assumed as <color=green>true</color> when there's 
 <b>void, noinput, noarccap, noclip, nohead, noheightindicator, noshadow, fadingholds</b>
 
 Attributes are splitted into different categories: <b>All events, long notes, floor notes, Arc, ArcTap</b>
-<color=red>Note: when attributes for designated types are used, type constraints are automatically applied.</color>
+<color=#ffaaaa>Note: when attributes for designated types are used, type constraints are automatically applied.</color>
 
 Some attributes allow self-comparing: timing, endTiming, x1, x2, y1, y2.
 For example, arc[x1==x2] selects arc that has same starting X position and ending X position.
@@ -77,7 +68,6 @@ For example, arc[x1==x2] selects arc that has same starting X position and endin
 <b>x y</b>
     ArcTap position at their timing
 
-
 <size=18>Classes</size>
 <b>.blue</b>
     Arc color is 0 ([color=1])
@@ -101,9 +91,12 @@ For example, arc[x1==x2] selects arc that has same starting X position and endin
     Event is long note (hold, arc)
 
 <size=18>Flags</size>
-<b>:selected</b>
+<b>:selected :sel</b>
     Only query from notes user selected
-<b>:arctap</b>
+<b>:arctap :at</b>
     Only select arctaps from resulting arcs
+
+
+
 ]]
 
