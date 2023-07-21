@@ -2,6 +2,7 @@ do
     local __FOLDER_ID = "rech"
     local __FOLDER_ID_GAME = "rech.game"
     local __FOLDER_ID_EDITING = "rech.editing"
+    local __FOLDER_ID_MISC = "rech.misc"
     local __FOLDER_ID_JQ = "rech.jaycurry"
     addFolderWithIcon(nil, __FOLDER_ID, "ea0b","rech's macro")
     addFolderWithIcon(__FOLDER_ID, __FOLDER_ID_EDITING, "e3c9","Editing")
@@ -39,4 +40,8 @@ do
     local wordle = require("rech.game.wordle")
     wordle.initMacro(__FOLDER_ID_GAME)
 
+    addFolderWithIcon(__FOLDER_ID, __FOLDER_ID_MISC, "e152","Misc")
+    ---@type rech.misc.DoNothing
+    local optimize = require("rech.misc.do-nothing")
+    optimize.initMacro(__FOLDER_ID_MISC)
 end
