@@ -53,9 +53,10 @@ do
         ---@param arctap LuaArcTap
         return function(arctap)
             if not arctap.is("arctap") then return false end
-            local arc1 = arctap.arc.instance
-            local arc2 = arc.instance
-            if arc1 == arc2 then return true end
+            local arc2 = arctap.arc
+            for _,arc1 in ipairs(arc) do
+                if arc1.instanceEquals(arc2) then return true end
+            end
             return false
         end
     end
@@ -126,7 +127,7 @@ do
     end
 
     ---Create a subquery Selects resulting note., only accepts one selector, flags are not allowed in this context.
-    ---@return rech.jaycurry.JayQuery
+    ---@return self
     function this:children(selector)
         local subquery = this()
         -- backup selection

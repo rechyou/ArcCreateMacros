@@ -63,7 +63,7 @@ do
     ---@return RSelectionResult
     function this.CurrentSelection(constraint)
         local req = Event.getCurrentSelection(constraint)
-        coroutine.yield()
+        -- coroutine.yield()
         ---@type RSelectionResult
         local result = {}
         result.all = req.resultCombined
@@ -91,7 +91,7 @@ do
         result.timing = queryResult["timing"]
         result.camera = queryResult["camera"]
         result.scenecontrol = queryResult["scenecontrol"]
-        result.all = nil
+        result.all = queryResult.resultCombined
         return result
     end
 

@@ -53,6 +53,8 @@ do
                 end
             end
             typeCondition = "(" .. table.concat(typeofConditions, "or") .. ")"
+
+            log(string.format("Built type condition: %s", typeCondition))
         end
         -- monkey patch sky floor condition
         local skyfloorCondition = {}
@@ -67,6 +69,7 @@ do
             typeCondition = string.format("(%s and %s)", typeCondition, skyfloorConditionString)
         end
         local condition = table.concat(self.conditions, "and")
+        log(string.format("Built condition: %s", condition))
         if condition == "" then condition = " true" end
         local f = "local e = ...\n"
         if self.haveTypeConstraint then
@@ -119,6 +122,12 @@ do
 
     ---@param type ('"any"' | '"tap"' | '"hold"' | '"arc"' | '"solidarc"' | '"voidarc"' | '"trace"' | '"arctap"' | '"timing"' | '"camera"' | '"floor"' | '"sky"' | '"short"' | '"long"' | '"judgeable"')
     function this:typeof(type)
+        if type == "short" and (self.types["tap"] == true or self.types["arctap"] == true) then
+            return self
+        end
+        if type == "long" and (self.types["hold"] == true or self.types["arc"] == true) then
+            return self
+        end
         self.types[type] = true
         if type == "tap" or type == "hold" then
             self.types["floor"] = true

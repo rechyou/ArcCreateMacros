@@ -4,10 +4,10 @@ do
     this.__index = this
 
     local __MACRO_ID = "rech.editing.removearctaptrace"
-    local __MACRO_DISPLAY_NAME = "Remove ArcTap trace"
+    local __MACRO_DISPLAY_NAME = "Remove ArcTap trace..."
 
-    ---@type rech.lib.Request
-    local request = require("rech.lib.request")
+    ---@type rech.jaycurry.JayCurry
+    local JayCurry = require("rech.jaycurry.JayCurry")
 
     ---@type rech.lib.CustomConstraints
     local CustomConstraints = require("rech.lib.custom-constraints")
@@ -23,33 +23,21 @@ do
     end
 
     function this.activate()
-        local traces = request.CurrentSelection(EventSelectionConstraint.trace()).arc
-        local command = Command.create(__MACRO_DISPLAY_NAME)
-        for _, trace in ipairs(traces) do
-            local arctaps = request.Query(
-                EventSelectionConstraint.create()
-                .arcTap()
-                .fromTiming(trace.timing)
-                .toTiming(trace.endTiming)
-                .custom(CustomConstraints.ofArc(trace), "")
-            ).arctap
-
-            command.add(trace.delete())
-            for i,arctap in ipairs(arctaps) do
-                local t = arctap.timing
-                local c = Chores.SaveSingleArcTap(t, trace.positionAt(t, true), trace.color, trace.timingGroup)
-                command.add(c)
-            end
+        local arcEvents = JayCurry.query("arc:sel")
+        local arctapEvents = JayCurry.query("arc:sel:arctap")
+        local command = Command.create(string.format("%s (%s)", __MACRO_DISPLAY_NAME, __MACRO_ID))
+        for _,arctap in ipairs(arctapEvents.events.arctap) do
+            local trace = arctap.arc
+            local t = arctap.timing
+            command.add(arctap.delete())
+            local arc, arctap = Chores.SaveSingleArcTap(t, trace.positionAt(t, true), trace.color, trace.timingGroup)
+            command.add(arc)
+            command.add(arctap)
+        end
+        for _,arc in ipairs(arcEvents.events.arc) do
+            command.add(arc.delete())
         end
         command.commit()
-    end
-
-    ---@param arc LuaArc
-    function this.ofArc(arc)
-        ---@param arctap LuaArcTap
-        return function(arctap)
-            return arctap.arc.instance == arc.instance
-        end
     end
 
     return this

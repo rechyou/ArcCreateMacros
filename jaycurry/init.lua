@@ -26,7 +26,7 @@ do
     q = JayCurry.query
 
     -- history
-    local lastQuery = ""
+    local lastQuery = "arc:sel:at"
 
     function this.initMacro(parentId)
 
@@ -54,7 +54,9 @@ do
         dialog:open()
         lastQuery = query:result()
         local ret = q(query:result())
-        ret:select()
+        if #ret.events.all ~= 0 then
+            ret:select()
+        end
         this.operationUI(ret)
     end
 

@@ -10,9 +10,9 @@ do
     ---@param timingGroup integer
     ---@return LuaChartCommand
     function this.SaveSingleArcTap(timing, xy, color, timingGroup)
-        local arc = Event.arc(timing, xy, timing+1, xy, true, color, "s", timingGroup, "none")
+        local arc = Event.arc(timing, xy, timing, xy, true, color, "s", timingGroup, "none")
         local arctap = Event.arcTap(timing, arc)
-        return arc.save() + arctap.save()
+        return arc.save(), arctap.save() 
     end
     return this
 end

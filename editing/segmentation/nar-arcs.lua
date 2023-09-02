@@ -3,12 +3,14 @@ do
     local Class = require("rech.Class")
     ---@type rech.lib.Request
     local request = require("rech.lib.request")
+    ---@type rech.lib.Iterators
+    local iterators = require("rech.lib.iterators")
     
-    ---@class rech.editing.SquareWave
+    ---@class rech.editing.NarArc
     local this = Class()
 
-    local __MACRO_ID = "rech.editing.SquareWave"
-    local __MACRO_DISPLAY_NAME = "Square wave"
+    local __MACRO_ID = "rech.editing.NarArc"
+    local __MACRO_DISPLAY_NAME = "Nar arc"
 
     ---Init macro
     ---@param parentId string
@@ -26,22 +28,18 @@ do
             notifyError("Arc timing or end timing does not match!")
             return
         end
-        local commands = Command.create("Square wave arc")
+        local commands = Command.create(string.format("%s (%s)", __MACRO_DISPLAY_NAME, __MACRO_ID))
         commands.add(arc1.delete())
         commands.add(arc2.delete())
-        local step =  Context.beatLengthAt(arc1.timing, arc1.timingGroup) / Context.beatlineDensity / 2
-        local flag = true
-        for t1 = arc1.timing, arc1.endTiming, step do
-            local t2 = t1 + step
-            if t2 > arc1.endTiming then t2 = arc1.endTiming end
-            if flag then
+        local fromTiming = arc1.timing
+        local toTiming = arc1.endTiming
+        local timingGroup = arc1.timingGroup
+        local step =  Context.beatLengthAt(fromTiming, timingGroup) / Context.beatlineDensity
+        for t1, t2 in iterators.range(fromTiming, toTiming, step) do
+            if arc1.positionAt(t1) ~= arc2.positionAt(t1) then
                 commands = commands + Event.arc(t1, arc1.positionAt(t1), t1, arc2.positionAt(t1), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
-                commands = commands + Event.arc(t1, arc2.positionAt(t1), t2, arc2.positionAt(t2), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
-            else
-                commands = commands + Event.arc(t1, arc2.positionAt(t1), t1, arc1.positionAt(t1), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
-                commands = commands + Event.arc(t1, arc1.positionAt(t1), t2, arc1.positionAt(t2), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
             end
-            flag = not flag
+            commands = commands + Event.arc(t1, arc2.positionAt(t1), t2, arc1.positionAt(t2), arc1.isTrace, arc1.color, arc1.type, arc1.timingGroup, arc1.sfx).save()
         end
 
         commands.commit()
