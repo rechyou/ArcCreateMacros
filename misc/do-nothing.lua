@@ -10,9 +10,6 @@ do
     ---@class rech.misc.DoNothing
     local this = Class()
 
-    ---@type rech.jaycurry.JayCurry
-    local jq = require("rech.jaycurry.JayCurry")
-
     local __MACRO_ID = "rech.editing.DoNothing"
     local __MACRO_DISPLAY_NAME = "Do nothing"
 

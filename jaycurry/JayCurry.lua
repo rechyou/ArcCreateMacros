@@ -91,7 +91,7 @@ do
 
     ---Static function for query, accepts multiple selectors, returns JayCurry instance.
     ---@param query string
-    ---@return self
+    ---@return rech.jaycurry.JayCurry
     function this.query(selectors)
         local self = this()
         self.queryString = selectors

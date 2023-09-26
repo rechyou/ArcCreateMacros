@@ -12,17 +12,17 @@ do
     ---@type rech.lib.Iterators
     local iterators = require("rech.lib.iterators")
     
-    ---@class rech.editing.StasisArc
+    ---@class rech.editing.MacaroniArc
     local this = Class()
 
-    local __MACRO_ID = "rech.editing.StasisArc"
-    local __MACRO_DISPLAY_NAME = "Stasis arc"
+    local __MACRO_ID = "rech.editing.MacaroniArc"
+    local __MACRO_DISPLAY_NAME = "Macaroni arc"
 
     ---Init macro
     ---@param parentId string
     function this.initMacro(parentId)
         removeMacro(__MACRO_ID)
-        addMacroWithIcon(parentId, __MACRO_ID, __MACRO_DISPLAY_NAME, "eba7", this.activate)
+        addMacroWithIcon(parentId, __MACRO_ID, __MACRO_DISPLAY_NAME, "ec20", this.activate)
     end
 
     function this.activate()
