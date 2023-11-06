@@ -245,17 +245,19 @@ do
             -- replace clashed timings first
             log(string.format("timing[g=%d]", tg))
             local timings = this.query(string.format("timing[g=%d]", tg)).events.timing
-            for sourceIndex,source in ipairs(newTimings) do
-                for targetIndex,target in ipairs(timings) do
-                    if target.timing == source.timing then
-                        target.bpm = source.bpm
-                        command.add(target.save())
-                        table.remove(newTimings, sourceIndex)
-                        goto copyTimingContinue
+            local function f()
+                for sourceIndex,source in ipairs(newTimings) do
+                    for targetIndex,target in ipairs(timings) do
+                        if target.timing == source.timing then
+                            target.bpm = source.bpm
+                            command.add(target.save())
+                            table.remove(newTimings, sourceIndex)
+                            return
+                        end
                     end
                 end
-                :: copyTimingContinue ::
             end
+            f()
         end
         for _,item in ipairs(newTimings) do
             local n = item.copy()
@@ -389,54 +391,58 @@ do
         if ends == nil then ends = 0 end
         -- Parse classes (.void.judgable)
         for class in query:sub(ends+1):gmatch("%.(%a+)") do
-            if class == "blue" then
-                customFilter:color("=", 0)
-                goto NextClass
+            local function f()
+                if class == "blue" then
+                    customFilter:color("=", 0)
+                    return
+                end
+                if class == "red" then
+                    customFilter:color("=", 1)
+                    return
+                end
+                if class == "green" then
+                    customFilter:color("=", 2)
+                    return
+                end
+                if class == "void" then
+                    customFilter:void("=", true)
+                    return
+                end
+                if class == "solid" then
+                    customFilter:void("=", false)
+                    return
+                end
+                if class == "judgable" or class == "judgeable" then
+                    customFilter:typeof(class)
+                    return
+                end
+                if this.ClassTypes[class] then
+                    customFilter:typeof(class)
+                    return
+                end
             end
-            if class == "red" then
-                customFilter:color("=", 1)
-                goto NextClass
-            end
-            if class == "green" then
-                customFilter:color("=", 2)
-                goto NextClass
-            end
-            if class == "void" then
-                customFilter:void("=", true)
-                goto NextClass
-            end
-            if class == "solid" then
-                customFilter:void("=", false)
-                goto NextClass
-            end
-            if class == "judgable" or class == "judgeable" then
-                customFilter:typeof(class)
-                goto NextClass
-            end
-            if this.ClassTypes[class] then
-                customFilter:typeof(class)
-                goto NextClass
-            end
-            :: NextClass ::
+            f()
         end
         for flag in query:sub(ends+1):gmatch("%:(%a+)") do
-            if flag == "arctap" then
-                flags.arctap = true
-                goto NextFlag
+            local function f()
+                if flag == "arctap" then
+                    flags.arctap = true
+                    return
+                end
+                if flag == "at" then
+                    flags.arctap = true
+                    return
+                end
+                if flag == "selected" then
+                    flags.selected = true
+                    return
+                end
+                if flag == "sel" then
+                    flags.selected = true
+                    return
+                end
             end
-            if flag == "at" then
-                flags.arctap = true
-                goto NextFlag
-            end
-            if flag == "selected" then
-                flags.selected = true
-                goto NextFlag
-            end
-            if flag == "sel" then
-                flags.selected = true
-                goto NextFlag
-            end
-            :: NextFlag ::
+            f()
         end
         local constraint = EventSelectionConstraint.create().any().custom(customFilter:build(), "")
         return constraint, flags

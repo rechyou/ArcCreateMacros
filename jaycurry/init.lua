@@ -26,7 +26,7 @@ do
     q = JayCurry.query
 
     -- history
-    local lastQuery = "arc:sel:at"
+    local lastQuery = ""
 
     function this.initMacro(parentId)
 
@@ -60,6 +60,7 @@ do
         this.operationUI(ret)
     end
 
+    local operationsHistory = {}
     ---@type table<string, fun(rech.jaycurry.JayCurry)>
     local operations = {
          ---@param r rech.jaycurry.JayCurry
@@ -68,15 +69,9 @@ do
         end,
          ---@param r rech.jaycurry.JayCurry
         ["Remove selection"] = function (r)
-            local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Remove notes")
-            local dropdown = Dropdown():set("Yes", "No"):value(1):label("Remove notes?")
-            dialog:add(dropdown)
-            dialog:open()
-            if dropdown:result() == "Yes" then
-                local c = r:remove()
-                c.name = "Remove notes"
-                c.commit()
-            end
+            local c = r:remove()
+            c.name = "Remove notes"
+            c.commit()
         end,
         ---@param r rech.jaycurry.JayCurry
         ["Offset event timing"] = function (r)
@@ -95,13 +90,19 @@ do
                 return
             end
             local dialog = Dialog(__MACRO_DIALOG_TITLE .. " - Move arcs")
-            local dx = TextField():is_number("Please input a number"):label("dx"):value("0")
-            local dy = TextField():is_number("Please input a number"):label("dy"):value("0")
+            local oldDX = operationsHistory["dx"]
+            local oldDY = operationsHistory["dy"]
+            if oldDX == nil then oldDX = 0 end
+            if oldDY == nil then oldDY = 0 end
+            local dx = TextField():is_number("Please input a number"):label("dx"):value(tostring(oldDX))
+            local dy = TextField():is_number("Please input a number"):label("dy"):value(tostring(oldDY))
             dialog:add(dx, dy)
             dialog:open()
             local c = r:movearc(tonumber(dx:result()), tonumber(dy:result()))
             c.name = "Move arcs"
             c.commit()
+            operationsHistory["dx"] = tonumber(dx:result())
+            operationsHistory["dy"] = tonumber(dy:result())
         end,
         ---@param r rech.jaycurry.JayCurry
         ["Copy to group"] = function (r)
