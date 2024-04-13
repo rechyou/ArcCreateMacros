@@ -1,8 +1,8 @@
 return [[<b><size=20>Lua API</size></b>
 JayCurry can also be used as Lua functions, you can import the module by adding following line:
-<b>require("rech.jaycurry.init")</b>
+<b>require<i></i>("rech.jaycurry.init")</b>
 or
-<b>local JayCurry = require("rech.jaycurry.JayCurry")
+<b>local JayCurry = require<i></i>("rech.jaycurry.JayCurry")
 local q = JayCurry.query</b>
 
 you then now can use <b>q()</b> to query notes, it returns a JayCurry instance.

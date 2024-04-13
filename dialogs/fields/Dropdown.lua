@@ -1,8 +1,8 @@
 do
     ---@type rech.Class
-    local Class = require "rech.Class"
+    local Class = require("rech.Class")
     ---@type rech.dialogs.BaseField
-    local BaseField = require "rech.dialogs.fields.BaseField"
+    local BaseField = require("rech.dialogs.fields.BaseField")
 
     ---@class rech.dialogs.Dropdown : rech.dialogs.BaseField
     ---@field options table

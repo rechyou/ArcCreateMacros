@@ -16,7 +16,7 @@ do
     local this = Class()
 
     local __MACRO_ID = "rech.editing.MacaroniArc"
-    local __MACRO_DISPLAY_NAME = "Macaroni arc"
+    local __MACRO_DISPLAY_NAME = "Macaroni(Stasis) arc"
 
     ---Init macro
     ---@param parentId string

@@ -65,5 +65,8 @@ do
         ---@type rech.misc.DoNothing
         local optimize = require("rech.misc.do-nothing")
         optimize.initMacro(__FOLDER_ID_MISC)
+        ---@type rech.misc.ArcDisconnectCheck
+        local optimize = require("rech.misc.arc-disconnect-check")
+        optimize.initMacro(__FOLDER_ID_MISC)
     end
 end

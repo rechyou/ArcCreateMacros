@@ -200,6 +200,12 @@ do
         return self:typeof("arc")
     end
 
+    ---@param value string
+    function this:sfx(operator, value)
+        self.conditions[#self.conditions+1] = generateCompare(operator, "e.sfx", value)
+        return self:typeof("arc")
+    end
+
     ---@param value integer
     function this:x1(operator, value)
         if not selfCompareMapping[value] then
@@ -369,6 +375,8 @@ do
         ["duration"] = this.duration,
         ["d"] = this.duration,
         ["color"] = this.color,
+        ["sfx"] = this.sfx,
+        ["fx"] = this.fx,
         ["x1"] = this.x1,
         ["x2"] = this.x2,
         ["y1"] = this.y1,
